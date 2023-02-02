@@ -5,6 +5,17 @@ import './App.css'
 
 function App() {
   const [dice, setDice] = useState(allNewDice())
+  const [tenzies, setTenzies] = useState(false)
+
+  useEffect(() => {
+    const areHeld = dice.filter(die => die.isHeld == true).length == 10 ? true : false;
+    const haveSameValue = dice.every((el, idx, arr) => { return el.value == arr[0].value })
+    console.log(areHeld)
+    console.log(haveSameValue)
+    if (areHeld && haveSameValue) {
+      console.log('You win')
+    }
+  }, [dice])
 
   function allNewDice() {
     const random = []
@@ -19,7 +30,6 @@ function App() {
   }
 
   function holdDice(id) {
-    console.log(id)
     setDice(dice.map(el => {
       if (el.id == id) {
         el.isHeld = !el.isHeld
@@ -46,6 +56,10 @@ function App() {
 
   return (
     <main className="App">
+      <div className="info-container">
+        <h1 className="title">Tenzies</h1>
+        <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
+      </div>
       <div className="die-container">
         {diceElements}
       </div>
