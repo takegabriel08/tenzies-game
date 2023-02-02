@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Die from './components/Die'
 import { nanoid } from 'nanoid'
+import Confetti from 'react-confetti'
 import './App.css'
 
 function App() {
@@ -10,11 +11,8 @@ function App() {
   useEffect(() => {
     const areHeld = dice.filter(die => die.isHeld == true).length == 10 ? true : false;
     const haveSameValue = dice.every((el, idx, arr) => { return el.value == arr[0].value })
-    console.log(areHeld)
-    console.log(haveSameValue)
     if (areHeld && haveSameValue) {
       setTenzies(true)
-      console.log('You win')
     }
   }, [dice])
 
@@ -40,9 +38,14 @@ function App() {
   }
 
   function roll() {
-    setDice(prev => prev.map(die => {
-      return die.isHeld ? die : { ...die, value: Math.ceil(Math.random() * 6) }
-    }))
+    if (tenzies) {
+      setTenzies(false)
+      setDice(allNewDice())
+    } else {
+      setDice(prev => prev.map(die => {
+        return die.isHeld ? die : { ...die, value: Math.ceil(Math.random() * 6) }
+      }))
+    }
   }
 
   const diceElements = dice.map((elm, idx) => {
@@ -68,8 +71,9 @@ function App() {
         className='roll-btn'
         onClick={roll}
       >
-        Roll
+        {tenzies == true ? "New Game" : "Roll"}
       </div>
+      {tenzies && <Confetti />}
     </main>
   )
 }
