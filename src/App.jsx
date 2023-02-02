@@ -13,6 +13,7 @@ function App() {
     console.log(areHeld)
     console.log(haveSameValue)
     if (areHeld && haveSameValue) {
+      setTenzies(true)
       console.log('You win')
     }
   }, [dice])
