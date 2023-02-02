@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Die from './components/Die'
+import { nanoid } from 'nanoid'
 import './App.css'
 
 function App() {
@@ -10,21 +11,35 @@ function App() {
     while (random.length < 10) {
       random.push({
         value: Math.ceil(Math.random() * 6),
-        isHeld: false
+        isHeld: false,
+        id: nanoid()
       })
     }
     return random
   }
 
+  function holdDice(id) {
+    console.log(id)
+    setDice(dice.map(el => {
+      if (el.id == id) {
+        el.isHeld = !el.isHeld
+      }
+      return el
+    }))
+  }
+
   function roll() {
-    setDice(prev => allNewDice())
+    setDice(prev => prev.map(die => {
+      return die.isHeld ? die : { ...die, value: Math.ceil(Math.random() * 6) }
+    }))
   }
 
   const diceElements = dice.map((elm, idx) => {
     return (
       <Die
-        key={idx}
-        value={elm.value}
+        key={elm.id}
+        {...elm}
+        holdDice={() => { holdDice(elm.id) }}
       />
     )
   })
