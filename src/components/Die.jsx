@@ -1,7 +1,7 @@
 import '../App.css'
 
 function Die(props) {
-    console.log(props)
+    // console.log(props)
     const styles = {
         backgroundColor: props.isHeld ? "#59E391" : "white"
     }
