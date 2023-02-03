@@ -1,7 +1,7 @@
 import '../App.css'
 
 function Die(props) {
-    // console.log(props)
+    console.log(props)
     const styles = {
         backgroundColor: props.isHeld ? "#59E391" : "white"
     }
@@ -12,11 +12,7 @@ function Die(props) {
             onClick={props.holdDice}
         >
             <div className="dienum-container">
-                <h1
-                    className='die-num'
-                >
-                    {props.value}
-                </h1>
+                <img src={`src/assets/${props.value}.svg`} className='die-num' alt="" />
             </div>
         </div>
     )
