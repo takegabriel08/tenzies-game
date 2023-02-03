@@ -8,6 +8,7 @@ import './App.css'
 function App() {
   const [dice, setDice] = useState(allNewDice())
   const [tenzies, setTenzies] = useState(false)
+  const [score, setScore] = useState({ clicks: 0, time: 0 })
 
   useEffect(() => {
     const areHeld = dice.filter(die => die.isHeld == true).length == 10 ? true : false;
@@ -42,7 +43,9 @@ function App() {
     if (tenzies) {
       setTenzies(false)
       setDice(allNewDice())
+      setScore({ clicks: 0, time: 0 })
     } else {
+      setScore(prev => ({ ...prev, clicks: prev.clicks + 1 }))
       setDice(prev => prev.map(die => {
         return die.isHeld ? die : { ...die, value: Math.ceil(Math.random() * 6) }
       }))
@@ -62,7 +65,7 @@ function App() {
 
   return (
     <main className="App">
-      <Score />
+      <Score {...score} />
       {tenzies && <Confetti width={innerWidth} height={innerHeight} style={{ position: 'absolute', top: '0', left: '0' }} />}
       <div className="info-container">
         <h1 className="title">Tenzies</h1>
