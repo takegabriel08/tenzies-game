@@ -5,9 +5,9 @@ export default function Score() {
         position: 'absolute',
         top: '1em',
         left: '1em',
-        minHeight: '50px',
-        minWidth: '80px',
-        backgroundColor: 'blue',
+        minHeight: '3em',
+        minWidth: '5em',
+        backgroundColor: '#4cbad877',
         borderRadius: '0.3em'
     }
     return (
