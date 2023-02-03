@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Die from './components/Die'
 import { nanoid } from 'nanoid'
 import Confetti from 'react-confetti'
+import Score from './components/Score'
 import './App.css'
 
 function App() {
@@ -52,7 +53,8 @@ function App() {
     return (
       <Die
         key={elm.id}
-        {...elm}
+        value={elm.value}
+        isHeld={elm.isHeld}
         holdDice={() => { holdDice(elm.id) }}
       />
     )
@@ -60,6 +62,8 @@ function App() {
 
   return (
     <main className="App">
+      <Score />
+      {tenzies && <Confetti />}
       <div className="info-container">
         <h1 className="title">Tenzies</h1>
         <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
@@ -73,7 +77,6 @@ function App() {
       >
         {tenzies == true ? "New Game" : "Roll"}
       </div>
-      {tenzies && <Confetti />}
     </main>
   )
 }
