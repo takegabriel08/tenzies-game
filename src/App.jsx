@@ -63,7 +63,7 @@ function App() {
   return (
     <main className="App">
       <Score />
-      {tenzies && <Confetti />}
+      {tenzies && <Confetti width={innerWidth} height={innerHeight} style={{ position: 'absolute', top: '0', left: '0' }} />}
       <div className="info-container">
         <h1 className="title">Tenzies</h1>
         <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>

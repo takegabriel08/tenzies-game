@@ -5,6 +5,7 @@ function Die(props) {
     const styles = {
         backgroundColor: props.isHeld ? "#59E391" : "white"
     }
+    console.log(`${JSON.stringify(styles)} ${props.isHeld}`)
     return (
         <div
             className="die-face"
