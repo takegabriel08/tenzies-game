@@ -18,7 +18,7 @@ export default function Score(props) {
         >
             Score
             <h3 className="clicks">clicks: {props.clicks}</h3>
-            <h3 className="time">time: {props.time}</h3>
+            <h3 className="time">time: {props.minutes}:{props.seconds}</h3>
         </div>
     )
 }

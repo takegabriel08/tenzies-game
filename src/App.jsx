@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Die from './components/Die'
 import { nanoid } from 'nanoid'
 import Confetti from 'react-confetti'
@@ -8,13 +8,17 @@ import './App.css'
 function App() {
   const [dice, setDice] = useState(allNewDice())
   const [tenzies, setTenzies] = useState(false)
-  const [score, setScore] = useState({ clicks: 0, time: 0 })
+  const [score, setScore] = useState({ clicks: 0, gameStarted: false })
+  const [seconds, setSeconds] = useState(0)
+  const [minutes, setMinutes] = useState(0)
 
   useEffect(() => {
     const areHeld = dice.filter(die => die.isHeld == true).length == 10 ? true : false;
     const haveSameValue = dice.every((el, idx, arr) => { return el.value == arr[0].value })
     if (areHeld && haveSameValue) {
       setTenzies(true)
+      clearInterval(id.current)
+      setScore(prev => ({ ...prev, gameStarted: false }))
     }
   }, [dice])
 
@@ -43,7 +47,8 @@ function App() {
     if (tenzies) {
       setTenzies(false)
       setDice(allNewDice())
-      setScore({ clicks: 0, time: 0 })
+      setScore({ clicks: 0, gameStarted: false })
+      setSeconds(0)
     } else {
       setScore(prev => ({ ...prev, clicks: prev.clicks + 1 }))
       setDice(prev => prev.map(die => {
@@ -63,9 +68,31 @@ function App() {
     )
   })
 
+  var id = useRef()
+  useEffect(() => {
+    if (score.gameStarted && seconds == 0 && minutes == 0) {
+      startTimer()
+    }
+    return () => clearInterval(id.current)
+  }, [score.gameStarted])
+
+  function startTimer() {
+    console.log('started')
+    id.current = setInterval(() => {
+      setSeconds(prev => prev + 1)
+      console.log(seconds)
+    }, 1000)
+  }
+
+  if (seconds == 59) {
+    setMinutes(prev => prev + 1)
+    setSeconds(0)
+  }
+
   return (
-    <main className="App">
-      <Score {...score} />
+    <main className="App" onClick={() => { setScore(prev => ({ ...prev, gameStarted: true })) }}>
+      <div className="roll-btn" onClick={startTimer}>start timer</div>
+      <Score {...score} minutes={minutes} seconds={seconds} />
       {tenzies && <Confetti width={innerWidth} height={innerHeight} style={{ position: 'absolute', top: '0', left: '0' }} />}
       <div className="info-container">
         <h1 className="title">Tenzies</h1>
