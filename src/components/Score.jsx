@@ -1,6 +1,7 @@
 import '../App.css'
 
 export default function Score(props) {
+    // console.log("score", props)
     const scoreStyle = {
         position: 'absolute',
         top: '1em',
@@ -11,6 +12,16 @@ export default function Score(props) {
         borderRadius: '0.3em',
     }
 
+    // const scoreElements = props.userScores.map((el, idx) => {
+    //     return (
+    //         <div className="score-container">
+    //             {idx}
+    //             <h2>{el.userScore.time}</h2>
+    //             <h2>{el.userScore.rolls}</h2>
+    //         </div>
+    //     )
+    // })
+
     return (
         <div
             className="score"
@@ -19,6 +30,11 @@ export default function Score(props) {
             Score
             <h3 className="clicks">clicks: {props.clicks}</h3>
             <h3 className="time">time: {props.minutes}:{props.seconds}</h3>
+            <br />
+            <div className="score-list">
+                High scores:
+                {/* {scoreElements} */}
+            </div>
         </div>
     )
 }

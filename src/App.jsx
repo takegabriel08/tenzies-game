@@ -11,14 +11,19 @@ function App() {
   const [score, setScore] = useState({ clicks: 0, gameStarted: false })
   const [seconds, setSeconds] = useState(0)
   const [minutes, setMinutes] = useState(0)
-
+  const [userScores, setUserScores] = useState(JSON.parse(localStorage.getItem('userScores')) || [])
+  console.log(userScores)
   useEffect(() => {
     const areHeld = dice.filter(die => die.isHeld == true).length == 10 ? true : false;
     const haveSameValue = dice.every((el, idx, arr) => { return el.value == arr[0].value })
     if (areHeld && haveSameValue) {
       setTenzies(true)
-      clearInterval(id.current)
+      clearInterval(intervalId.current)
       setScore(prev => ({ ...prev, gameStarted: false }))
+      const newScore = { id: nanoid(), time: `${minutes}:${seconds}`, rolls: score.clicks }
+      const scoreArr = [newScore, ...userScores]
+      setUserScores(prev => [newScore, ...prev])
+      localStorage.setItem("userScores", JSON.stringify(scoreArr))
     }
   }, [dice])
 
@@ -35,12 +40,14 @@ function App() {
   }
 
   function holdDice(id) {
-    setDice(dice.map(el => {
-      if (el.id == id) {
-        el.isHeld = !el.isHeld
-      }
-      return el
-    }))
+    if (!tenzies) {
+      setDice(dice.map(el => {
+        if (el.id == id) {
+          el.isHeld = !el.isHeld
+        }
+        return el
+      }))
+    }
   }
 
   function roll() {
@@ -49,6 +56,7 @@ function App() {
       setDice(allNewDice())
       setScore({ clicks: 0, gameStarted: false })
       setSeconds(0)
+      setMinutes(0)
     } else {
       setScore(prev => ({ ...prev, clicks: prev.clicks + 1 }))
       setDice(prev => prev.map(die => {
@@ -68,19 +76,17 @@ function App() {
     )
   })
 
-  var id = useRef()
+  var intervalId = useRef()
   useEffect(() => {
     if (score.gameStarted && seconds == 0 && minutes == 0) {
       startTimer()
     }
-    return () => clearInterval(id.current)
+    return () => clearInterval(intervalId.current)
   }, [score.gameStarted])
 
   function startTimer() {
-    console.log('started')
-    id.current = setInterval(() => {
+    intervalId.current = setInterval(() => {
       setSeconds(prev => prev + 1)
-      console.log(seconds)
     }, 1000)
   }
 
@@ -91,8 +97,7 @@ function App() {
 
   return (
     <main className="App" onClick={() => { setScore(prev => ({ ...prev, gameStarted: true })) }}>
-      <div className="roll-btn" onClick={startTimer}>start timer</div>
-      <Score {...score} minutes={minutes} seconds={seconds} />
+      <Score {...score} minutes={minutes} seconds={seconds} userScores={userScores} />
       {tenzies && <Confetti width={innerWidth} height={innerHeight} style={{ position: 'absolute', top: '0', left: '0' }} />}
       <div className="info-container">
         <h1 className="title">Tenzies</h1>
