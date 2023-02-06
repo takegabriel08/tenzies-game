@@ -13,6 +13,7 @@ function App() {
   const [minutes, setMinutes] = useState(0)
   const [userScores, setUserScores] = useState(JSON.parse(localStorage.getItem('userScores')) || [])
   console.log(userScores)
+  // TODO display users from localstorage on score board
   useEffect(() => {
     const areHeld = dice.filter(die => die.isHeld == true).length == 10 ? true : false;
     const haveSameValue = dice.every((el, idx, arr) => { return el.value == arr[0].value })
