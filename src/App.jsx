@@ -3,6 +3,7 @@ import Die from './components/Die'
 import { nanoid } from 'nanoid'
 import Confetti from 'react-confetti'
 import Score from './components/Score'
+import ScoreBoard from './components/ScoreBoard'
 import './App.css'
 
 function App() {
@@ -77,6 +78,22 @@ function App() {
     )
   })
 
+  const scoreBoardElements = userScores.map((el, idx) => {
+    return (
+      <ScoreBoard
+        key={el.id}
+        {...el}
+        index={idx}
+      />
+    )
+  })
+
+  const scoreBoardStyles = {
+    position: "absolute",
+    right: '1em',
+    top: '1em'
+  }
+
   var intervalId = useRef()
   useEffect(() => {
     if (score.gameStarted && seconds == 0 && minutes == 0) {
@@ -98,7 +115,10 @@ function App() {
 
   return (
     <main className="App" onClick={() => { setScore(prev => ({ ...prev, gameStarted: true })) }}>
-      <Score {...score} minutes={minutes} seconds={seconds} userScores={userScores} />
+      <Score {...score} minutes={minutes} seconds={seconds} />
+      <div className="score-container" style={scoreBoardStyles}>
+        {scoreBoardElements}
+      </div>
       {tenzies && <Confetti width={innerWidth} height={innerHeight} style={{ position: 'absolute', top: '0', left: '0' }} />}
       <div className="info-container">
         <h1 className="title">Tenzies</h1>

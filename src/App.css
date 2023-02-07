@@ -111,3 +111,22 @@ main {
   margin: 0;
   line-height: 1.3em;
 }
+.score-container {
+  background-color: #90b8e06c;
+  border-radius: 0.3em;
+  overflow: scroll;
+  max-height: 9.5em;
+  padding-top: 0.5em;
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+}
+.score-board > h2 {
+  margin: 0;
+  text-align: center;
+}
+
+@media (max-width: 205px) {
+  .score-container {
+    display: none;
+  }
+}
