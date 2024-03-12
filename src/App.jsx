@@ -91,7 +91,8 @@ function App() {
   const scoreBoardStyles = {
     position: "absolute",
     right: '1em',
-    top: '1em'
+    top: '1em',
+    overflow: 'auto',
   }
 
   var intervalId = useRef()
